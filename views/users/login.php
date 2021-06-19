@@ -22,11 +22,12 @@ require_once './views/layouts/header.php'; // header
                        class="bg-blue-300 border border-black rounded-md w-1/5 mx-auto p-2 my-3 hover:bg-blue-400">
             </form>
 
-            <?php if (!empty($error)) { ?>
-                <p class="text-red-500 text-center">Login fail, please try again!</p>
-            <?php } ?>
+
             <?php if (isset($_SESSION['register_message'])) { unset($_SESSION['register_message']) ?>
                 <p class="text-green-500 text-center">Register success!</p>
+            <?php } ?>
+            <?php if (isset($_SESSION['login_message'])) { unset($_SESSION['login_message'])?>
+                <p class="text-red-500 text-center">Login fail, please try again!</p>
             <?php } ?>
         </section>
     </div>

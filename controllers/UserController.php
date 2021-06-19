@@ -9,10 +9,11 @@ class UserController extends User
      */
     public function handleLogin()
     {
-        $email = trim(filter_input(INPUT_POST, "email"));
-        $password = md5(trim(filter_input(INPUT_POST, "password")));
-
-        return parent::login($email, $password);// Call login from User model
+        $email = filter_input(INPUT_POST, "email");
+        $password = filter_input(INPUT_POST, "password");
+        $password = md5($password);
+        // Call login from User model
+        return parent::login($email, $password);
     }
 
     public function handleRegister(): bool

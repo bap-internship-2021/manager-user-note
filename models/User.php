@@ -15,11 +15,11 @@ class User extends DatabaseConnect
             $query = 'SELECT id, email, password FROM users WHERE email = :email AND password = :password';
             $statement = $this->db->prepare($query);
             $statement->bindValue(':email', $email);
-            $statement->bindValue(':password', $password);
+            $statement->bindValue(':password', $password, PDO::PARAM_STR_CHAR);
             $statement->execute();
             $user = $statement->fetch(PDO::FETCH_ASSOC);
             $statement->closeCursor();
-            return $user;
+           return $user;
         } catch (PDOException | Exception $exception) {
             die($exception->getMessage());
         }

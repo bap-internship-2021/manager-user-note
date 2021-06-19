@@ -36,12 +36,12 @@ switch ($action) {
     {
         // Try attempt login
         $user = $userController->handleLogin();
-        if ($user == true) {
+        if ($user != false) {
             $_SESSION['user_session'] = $user;
             header('Location: .?action=home'); // Redirect to home page view
         } else {
-            $error = 'login error';
-            include 'views/users/login.php';
+            $_SESSION['login_message'] = 'Login fail!';
+            header("Location: .?action=login");
         }
         break;
     }
@@ -63,8 +63,8 @@ switch ($action) {
             $_SESSION['register_message'] = 'Register success';
             header('Location: .?action=login');
         } else {
-            $error = 'Register fail';
-            include 'views/users/register.php';
+            $_SESSION['register_message'] = 'Register fail!';
+            header("Location: .?action=register");
         }
         break;
     }
