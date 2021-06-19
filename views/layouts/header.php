@@ -19,7 +19,7 @@
                 <ul class="flex flex-row mx-auto text-center justify-end">
                     <li><p class="p-1 m-1"><?php echo $_SESSION['user_session']['email'] ?></p></li>
                     <li>
-                        <form action="">
+                        <form action=".?action=logout" method="post">
                             <input type="submit" value="Logout"
                                    class="bg-yellow-300 cursor-pointer transition hover:bg-yellow-500 focus:bg-green-300 rounded-sm p-1 m-1">
                         </form>
@@ -27,6 +27,7 @@
                 </ul>
                 <!-- Else -->
             <?php } else { ?>
+                <ul class="flex flex-row mx-auto text-center justify-end">
                 <li class="p-2"><a href=".?action=login">Login</a></li>
                 <li class="p-2"><a href="">Register</a></li>
                 </ul>
