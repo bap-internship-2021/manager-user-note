@@ -2,10 +2,10 @@
 
 class DatabaseConnect
 {
-    protected $db;
-    private $dsn = 'mysql:host=localhost;dbname=manager_note';
-    private $username = 'root';
-    private $password = '';
+    protected PDO $db;
+    private string $dsn = 'mysql:host=localhost;dbname=manager_note';
+    private string $username = 'root';
+    private string $password = '';
 
     public function __construct()
     {

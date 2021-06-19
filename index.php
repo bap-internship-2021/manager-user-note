@@ -16,7 +16,7 @@ if ($action == null) {
 }
 
 if (!empty($_SESSION['user_session'])) { // if user authenticate
-    if (in_array($action, ['login', 'handle_login'])) { // if action are login and handle_login then redirect to root directory
+    if (in_array($action, ['login', 'handle_login', 'register'])) { // if action are login and handle_login then redirect to root directory
         header('Location: /'); // Return redirect back
     }
 }
@@ -51,9 +51,22 @@ switch ($action) {
         header('Location: /'); // Return home
         break;
     }
-    case 'register' : // show form
+    case 'register': // show form
     {
         include_once 'views/users/register.php';
+        break;
+    }
+    case 'handle_register': // Register user
+    {
+        $result = $userController->handleRegister();
+        if ($result === true) {
+            $_SESSION['register_message'] = 'Register success';
+            header('Location: .?action=login');
+        } else {
+            $error = 'Register fail';
+            include 'views/users/register.php';
+        }
+        break;
     }
 
 }

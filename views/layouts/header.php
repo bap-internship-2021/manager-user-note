@@ -29,7 +29,7 @@
             <?php } else { ?>
                 <ul class="flex flex-row mx-auto text-center justify-end">
                 <li class="p-2"><a href=".?action=login">Login</a></li>
-                <li class="p-2"><a href="">Register</a></li>
+                <li class="p-2"><a href=".?action=register">Register</a></li>
                 </ul>
             <?php } ?>
 
