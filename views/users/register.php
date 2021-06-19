@@ -18,7 +18,7 @@ require_once './views/layouts/header.php'; // header
                        class="bg-gray-200 focus:bg-white border border-black rounded-md w-3/5 mx-auto p-2">
 
                 <!-- Button submit -->
-                <input type="submit" value="Login"
+                <input type="submit" value="Register now"
                        class="bg-blue-300 border border-black rounded-md w-1/5 mx-auto p-2 my-3 hover:bg-blue-400">
             </form>
 

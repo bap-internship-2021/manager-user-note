@@ -15,10 +15,9 @@ if ($action == null) {
     }
 }
 
-if (!empty($_SESSION['user_session'])){
-    if (in_array($action, ['login', 'handle_login'])) {
+if (!empty($_SESSION['user_session'])) { // if user authenticate
+    if (in_array($action, ['login', 'handle_login'])) { // if action are login and handle_login then redirect to root directory
         header('Location: /'); // Return redirect back
-        exit();
     }
 }
 
@@ -28,20 +27,33 @@ switch ($action) {
         include './views/home.php';
         break;
     }
-    case 'login':
+    case 'login': // Show form login
     {
         include 'views/users/login.php';
         break;
     }
-    case 'handle_login':
+    case 'handle_login': // Handle checking login
     {
         // Try attempt login
         $user = $userController->handleLogin();
         if ($user == true) {
             $_SESSION['user_session'] = $user;
             header('Location: .?action=home'); // Redirect to home page view
+        } else {
+            $error = 'login error';
+            include 'views/users/login.php';
         }
-        header('Location: ' . $_SERVER['HTTP_REFERER']); // Return back login form view
         break;
     }
+    case 'logout' : // user logout
+    {
+        session_destroy();
+        header('Location: /'); // Return home
+        break;
+    }
+    case 'register' : // show form
+    {
+        include_once 'views/users/register.php';
+    }
+
 }
