@@ -86,8 +86,6 @@ class User extends DatabaseConnect
 
     public function storeNote($userId, $title, $path, $content)
     {
-//        var_dump($title, $path, $content, $userId);
-//        exit();
         try {
             $query = 'INSERT INTO notes (title, path, content, user_id) VALUES (:title, :path, :content, :user_id)';
             $statement = $this->db->prepare($query);
@@ -97,13 +95,10 @@ class User extends DatabaseConnect
             $statement->bindValue(':user_id', $userId, PDO::PARAM_INT);
             $result = $statement->execute();
             $statement->closeCursor();
-            var_dump($result);
-            exit();
+
             return $result;
         } catch (PDOException $exception) {
             echo $exception->getMessage();
         }
     }
-
-
 }

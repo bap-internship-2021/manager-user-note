@@ -11,6 +11,8 @@ class UserController extends User
     {
         $email = filter_input(INPUT_POST, "email");
         $password = filter_input(INPUT_POST, "password");
+        setcookie('email', $email, strtotime('+ 1 year'), '/');
+        setcookie('password', $password, strtotime('+ 1 year'), '/');
         $password = md5($password);
         // Call login from User model
         return parent::login($email, $password);
@@ -78,17 +80,87 @@ class UserController extends User
             $userId = $_SESSION['user_session']['id'];
             $title = filter_input(INPUT_POST, 'title');
             $content = filter_input(INPUT_POST, 'content');
-            $content = trim(htmlspecialchars($content));
-            $title = trim(htmlspecialchars($title));
-            $ext = 'txt';
-            $fileName = time() . $title . '.' . $ext;
-
-            $path = './public/notes/' . $fileName;
-            echo '<pre>';
-
-            file_put_contents($path, $content);
-
-            parent::storeNote($userId, $title, $path, $content);
+            $content = trim($content);
+            $title = trim($title);
+            // Validate
+            $isOk = true;
+            if ($title == null) {
+                $_SESSION['note']['titleError'] = 'Title must be not null';
+                $isOk = false;
+            }
+            if ($content == null) {
+                $_SESSION['note']['contentError'] = 'Content must be not null';
+                $isOk = false;
+            }
+            if ($isOk == true) {
+                $ext = 'txt'; // extension
+                $fileName = time() . $title . '.' . $ext; // Setting file name
+                $path = './public/notes/' . $fileName; // setting path of file name
+                file_put_contents($path, $content); // writing content to file name
+                if (parent::storeNote($userId, $title, $path, $content) === true) {
+//                    TODO: Làm chức năng list notes và cho redirect về list notes nếu tạo note thành công
+//                    header('Location: .?action=list_notes);
+                    echo 'create success';
+                }
+            } else {
+                header('Location: .?action=create_note');
+            }
         }
+    }
+
+    public function handleUploadNotes()
+    {
+        // Get current user
+        $userId = $_SESSION['user_session']['id'];
+        $data = [];
+//        echo '<pre>';
+//        print_r($_FILES['files']);
+//        exit();
+
+        // Get target file
+        foreach ($_FILES['files']['name'] as $key => $noteName) {
+            $data[$key]['title'] = $noteName; // Set title
+            $noteName = time() . $noteName; // set note name file for ignore file same name
+            $extension = pathinfo($noteName, PATHINFO_EXTENSION); // Get file extension
+            $targetFile = './public/notes/' . $noteName; // Set target file to store
+            $data[$key]['targetFile'] = $targetFile;
+            $data[$key]['extension'] = $extension;
+        }
+        // Get temp name
+        foreach ($_FILES['files']['tmp_name'] as $key => $value) {
+            $data[$key]['tmp_name'] = $value;
+        }
+        // Get file size
+        foreach ($_FILES['files']['size'] as $key => $value) {
+            $data[$key]['size'] = $value;
+        }
+
+        // Upload file
+        foreach ($data as $key => $value) {
+            $isOk = true; // Flag
+
+            // Check file type
+            if ($value['extension'] !== 'txt') {
+                $_SESSION['upload_files']['extension'] = 'File extension only .txt!';
+                $isOk = false;
+            }
+            // Check file size
+            if ($value['size'] > 1000000) { // if file size > 1MB then fail
+                $_SESSION['upload_files']['fileSize'] = 'File upload not more than 1MB!';
+                $isOk = false;
+            }
+
+            if ($isOk == true) { // if true
+                if (move_uploaded_file($value['tmp_name'], $value['targetFile'])) {
+                    $content = file_get_contents($value['targetFile']);
+                    if(parent::storeNote($userId, $value['title'], $value['targetFile'], $content)){
+                        echo 'SUccess';
+//                        TODO:: return detail note
+//                        header('Location: ?.action');
+                    }
+                }
+            }
+        }
+
     }
 }

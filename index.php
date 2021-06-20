@@ -71,5 +71,15 @@ switch ($action) {
         $userController->handle_store_note();
         break;
     }
+    case 'upload_notes':
+    {
+        include_once 'views/notes/upload-note.php';
+        break;
+    }
+    case 'handle_upload_notes':
+    {
+        $userController->handleUploadNotes();
+        break;
+    }
 
 }
