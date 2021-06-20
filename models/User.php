@@ -60,7 +60,7 @@ class User extends DatabaseConnect
                     // Create profile with user id = $userId
                     $query = 'INSERT INTO profiles (user_id, name, phone) VALUES (:user_id, :name, :phone)';
                     $statement = $this->db->prepare($query);
-                    $statement->bindValue(':user_id', $userId);
+                    $statement->bindValue(':user_id', $userId, PDO::PARAM_INT);
                     $statement->bindValue(':name', $name);
                     $statement->bindValue(':phone', $phone, PDO::PARAM_INT);
                     $statement->execute();
@@ -82,6 +82,28 @@ class User extends DatabaseConnect
             echo $exception->getMessage();
             return false;
         }
-
     }
+
+    public function storeNote($userId, $title, $path, $content)
+    {
+//        var_dump($title, $path, $content, $userId);
+//        exit();
+        try {
+            $query = 'INSERT INTO notes (title, path, content, user_id) VALUES (:title, :path, :content, :user_id)';
+            $statement = $this->db->prepare($query);
+            $statement->bindValue(':title', $title);
+            $statement->bindValue(':path', $path);
+            $statement->bindValue(':content', $content);
+            $statement->bindValue(':user_id', $userId, PDO::PARAM_INT);
+            $result = $statement->execute();
+            $statement->closeCursor();
+            var_dump($result);
+            exit();
+            return $result;
+        } catch (PDOException $exception) {
+            echo $exception->getMessage();
+        }
+    }
+
+
 }

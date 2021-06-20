@@ -61,5 +61,15 @@ switch ($action) {
         $userController->handleRegister();
         break;
     }
+    case 'create_note' : // view create note
+    {
+        include_once 'views/notes/create-note.php';
+        break;
+    }
+    case 'handle_store_note':
+    {
+        $userController->handle_store_note();
+        break;
+    }
 
 }

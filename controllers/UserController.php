@@ -16,6 +16,7 @@ class UserController extends User
         return parent::login($email, $password);
     }
 
+
     public function handleRegister()
     {
         $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
@@ -27,7 +28,7 @@ class UserController extends User
         $_SESSION['register_error'] = [];
         if ($email == null) {
             $isOk = false;
-            $_SESSION['register_error']['email'] = 'Required email';
+            $_SESSION['register_error']['email'] = 'Required email or email is not valid';
         }
         if ($name == null) {
             $isOk = false;
@@ -54,8 +55,7 @@ class UserController extends User
             $password = md5($password);// Md5 input password
             // Register
             $result = parent::register($email, $password, $name, $phone);
-//var_dump($result);
-//exit();
+
             if ($result === -1) // if email exists
             {
                 $_SESSION['email_exists'] = 'Register fail! This email have exists in system, please try another email!';
@@ -64,7 +64,7 @@ class UserController extends User
             if ($result == true) { // if result is true
                 $_SESSION['register_success'] = 'Register success';
                 header("Location: .?action=register");
-            }  else { // Some thing went wrong
+            } else { // Some thing went wrong
                 $_SESSION['register_message'] = 'Something error!';
                 header("Location: .?action=register");
             }
@@ -72,4 +72,23 @@ class UserController extends User
         header("Location: .?action=register");
     }
 
+    public function handle_store_note()
+    {
+        if (isset($_SESSION['user_session'])) {
+            $userId = $_SESSION['user_session']['id'];
+            $title = filter_input(INPUT_POST, 'title');
+            $content = filter_input(INPUT_POST, 'content');
+            $content = trim(htmlspecialchars($content));
+            $title = trim(htmlspecialchars($title));
+            $ext = 'txt';
+            $fileName = time() . $title . '.' . $ext;
+
+            $path = './public/notes/' . $fileName;
+            echo '<pre>';
+
+            file_put_contents($path, $content);
+
+            parent::storeNote($userId, $title, $path, $content);
+        }
+    }
 }
