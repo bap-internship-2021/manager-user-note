@@ -3,7 +3,7 @@ DATABASE IF NOT EXISTS manager_note
     CHARACTER SET utf8 COLLATE utf8_vietnamese_ci;
 
 use manager_note;
-show tables;
+
 
 -- Create users table
 CREATE TABLE IF NOT EXISTS users
@@ -40,3 +40,5 @@ ALTER TABLE profiles
 ALTER TABLE notes
     ADD CONSTRAINT FK_User_Note
         FOREIGN KEY (user_id) REFERENCES users (id);
+
+show tables;

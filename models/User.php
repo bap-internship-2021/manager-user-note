@@ -19,7 +19,7 @@ class User extends DatabaseConnect
             $statement->execute();
             $user = $statement->fetch(PDO::FETCH_ASSOC);
             $statement->closeCursor();
-           return $user;
+            return $user;
         } catch (PDOException | Exception $exception) {
             die($exception->getMessage());
         }
@@ -75,6 +75,8 @@ class User extends DatabaseConnect
                     echo $exception->getMessage();
                     return false;
                 }
+            } else {
+                return -1;
             }
         } catch (PDOException | Exception $exception) {
             echo $exception->getMessage();

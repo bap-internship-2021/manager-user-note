@@ -58,14 +58,7 @@ switch ($action) {
     }
     case 'handle_register': // Register user
     {
-        $result = $userController->handleRegister();
-        if ($result === true) {
-            $_SESSION['register_message'] = 'Register success';
-            header('Location: .?action=login');
-        } else {
-            $_SESSION['register_message'] = 'Register fail!';
-            header("Location: .?action=register");
-        }
+        $userController->handleRegister();
         break;
     }
 
