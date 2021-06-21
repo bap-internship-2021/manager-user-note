@@ -5,7 +5,7 @@ class UserController extends User
 {
     public function handleLogin()
     {
-        // Get input
+        // Get input from user
         $email = trim(filter_input(INPUT_POST, "email"));
         $password = trim(filter_input(INPUT_POST, "password"));
 //        $email = trim($email);
