@@ -39,7 +39,7 @@ require_once './views/layouts/header.php'; // header
                                 <input type="submit" value="Delete">
                             </form>
                         </td>
-                        <td><a href="<?php echo $note['path']; ?>">Download</a></td>
+                        <td><a href=".?action=download_note&path=<?php echo $note['path']; ?>">Download</a></td>
                     </tr>
                 <?php } ?>
             <?php } ?>
