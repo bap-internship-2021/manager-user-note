@@ -2,12 +2,13 @@
 
 session_start(); // Start session
 require_once('controllers/UserController.php'); // Require UserController
-
+require_once 'controllers/NoteController.php'; // Require NoteController
 $action = filter_input(INPUT_POST, 'action'); // default is post method
 
 // Create new object of UserController class
 $userController = new UserController();
-
+// Create new object of NoteController class
+$noteController = new NoteController();
 if ($action == null) {
     $action = filter_input(INPUT_GET, 'action');
     if ($action == null) {
@@ -58,15 +59,48 @@ switch ($action) {
     }
     case 'handle_register': // Register user
     {
-        $result = $userController->handleRegister();
-        if ($result === true) {
-            $_SESSION['register_message'] = 'Register success';
-            header('Location: .?action=login');
-        } else {
-            $_SESSION['register_message'] = 'Register fail!';
-            header("Location: .?action=register");
-        }
+        $userController->handleRegister();
         break;
+    }
+    case 'create_note' : // view create note
+    {
+        include_once 'views/notes/create-note.php';
+        break;
+    }
+    case 'handle_store_note':
+    {
+        $userController->handle_store_note();
+        break;
+    }
+    case 'upload_notes':
+    {
+        include_once 'views/notes/upload-note.php';
+        break;
+    }
+    case 'handle_upload_notes':
+    {
+        $userController->handleUploadNotes();
+        break;
+    }
+    case 'list_notes':
+    {
+        $notes = $noteController->handleListNotes();
+        include 'views/notes/list-notes.php';
+        break;
+    }
+    case 'edit_note':
+    {
+        $userId = $_SESSION['user_session']['id'];
+        $id = filter_input(INPUT_GET, 'id');
+        $note = $noteController->handleDetailNote($userId, $id);
+        $path = $note['path'];
+        include 'views/notes/edit-note.php';
+        break;
+    }
+    case 'handle_edit_note':
+    {
+
+        $noteController->handleEditNote();
     }
 
 }

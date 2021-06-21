@@ -12,14 +12,14 @@ class User extends DatabaseConnect
     public function login($email, $password)
     {
         try {
-            $query = 'SELECT id, email, password FROM users WHERE email = :email AND password = :password';
+            $query = 'SELECT id, email, password FROM users WHERE (email = :email) AND (password = :password)';
             $statement = $this->db->prepare($query);
             $statement->bindValue(':email', $email);
             $statement->bindValue(':password', $password, PDO::PARAM_STR_CHAR);
             $statement->execute();
             $user = $statement->fetch(PDO::FETCH_ASSOC);
             $statement->closeCursor();
-           return $user;
+            return $user;
         } catch (PDOException | Exception $exception) {
             die($exception->getMessage());
         }
@@ -60,7 +60,7 @@ class User extends DatabaseConnect
                     // Create profile with user id = $userId
                     $query = 'INSERT INTO profiles (user_id, name, phone) VALUES (:user_id, :name, :phone)';
                     $statement = $this->db->prepare($query);
-                    $statement->bindValue(':user_id', $userId);
+                    $statement->bindValue(':user_id', $userId, PDO::PARAM_INT);
                     $statement->bindValue(':name', $name);
                     $statement->bindValue(':phone', $phone, PDO::PARAM_INT);
                     $statement->execute();
@@ -75,11 +75,30 @@ class User extends DatabaseConnect
                     echo $exception->getMessage();
                     return false;
                 }
+            } else {
+                return -1;
             }
         } catch (PDOException | Exception $exception) {
             echo $exception->getMessage();
             return false;
         }
+    }
 
+    public function storeNote($userId, $title, $path, $content)
+    {
+        try {
+            $query = 'INSERT INTO notes (title, path, content, user_id) VALUES (:title, :path, :content, :user_id)';
+            $statement = $this->db->prepare($query);
+            $statement->bindValue(':title', $title);
+            $statement->bindValue(':path', $path);
+            $statement->bindValue(':content', $content);
+            $statement->bindValue(':user_id', $userId, PDO::PARAM_INT);
+            $result = $statement->execute();
+            $statement->closeCursor();
+
+            return $result;
+        } catch (PDOException $exception) {
+            echo $exception->getMessage();
+        }
     }
 }
