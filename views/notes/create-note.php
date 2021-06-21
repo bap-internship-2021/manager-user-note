@@ -6,7 +6,7 @@ require_once './views/layouts/header.php'; // header
     <div class="container mx-auto mt-5">
         <section>
             <h1 class="text-blue-300 text-5xl text-center">Create new note</h1>
-            <form class="w-3/5  mx-auto mt-3 border-2 border-blue-300 rounded-md flex flex-col"
+            <form class="w-full  mx-auto mt-3 border-2 border-blue-300 rounded-md flex flex-col"
                   style="height: 500px"
                   action=".?action=handle_store_note"
                   method="POST">

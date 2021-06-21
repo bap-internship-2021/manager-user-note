@@ -6,7 +6,7 @@ require_once './views/layouts/header.php'; // header
     <div class="container mx-auto mt-5">
         <section>
             <h1 class="text-blue-300 text-5xl text-center">Edit your note</h1>
-            <form class="w-3/5  mx-auto mt-3 border-2 border-blue-300 rounded-md flex flex-col"
+            <form class="w-full  mx-auto mt-3 border-2 border-blue-300 rounded-md flex flex-col"
                   style="height: 500px"
                   action=".?action=handle_edit_note"
                   method="POST">
@@ -26,7 +26,7 @@ require_once './views/layouts/header.php'; // header
                           class="resize-none border border-black  rounded-md bg-gray-100 my-10 h-full focus:bg-white w-4/5 mx-auto py-1">
                     <?php if(!empty($note['content'])) echo $note['content']; ?>
                 </textarea>
-                <!-- Content error -->
+                <!-- Content error -->gi
                 <?php if (isset($_SESSION['note']['contentError'])) { ?>
                     <p class="text-center text-red-500"><?php echo $_SESSION['note']['contentError'] ?></p>
                     <?php unset($_SESSION['note']['contentError']);
