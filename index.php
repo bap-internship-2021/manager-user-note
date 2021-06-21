@@ -102,13 +102,23 @@ switch ($action) {
         $noteController->handleEditNote();
         break;
     }
+    case 'detail_note':
+    {
+        $userId = $_SESSION['user_session']['id'];
+        $noteId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+        $note = $noteController->handleDetailNote($userId, $noteId);
+
+        include 'views/notes/detail-note.php';
+
+        break;
+    }
     case 'delete':
     {
         $userId = $userId = $_SESSION['user_session']['id'];
         $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
         $note = $noteController->handleDetailNote($userId, $id);
         if ($noteController->handleDelete($id) == true) {
-            unlink($note['path']);
+            unlink($note['path']); // Delete file with path file
             $_SESSION['Delete']['success'] = 'Delete success!';
             header('Location: .?action=list_notes');
         } else {
@@ -139,7 +149,8 @@ switch ($action) {
 
             //Terminate from the script
             die();
-            break;
+
         }
+        break;
     }
 }

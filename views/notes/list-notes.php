@@ -20,7 +20,7 @@ require_once './views/layouts/header.php'; // header
                 <th>NO.</th>
                 <th class="truncate">Title</th>
                 <th class="truncate">Content</th>
-                <th colspan="3">Action</th>
+                <th colspan="4">Action</th>
             </tr>
             </thead>
             <tbody>
@@ -32,6 +32,8 @@ require_once './views/layouts/header.php'; // header
                         <td><?php echo $note['title'] ?></td>
                         <td><?php echo $note['content'] ?></td>
                         <td><a href=".?action=edit_note&id=<?php echo $note['id'] ?>" class="text-yellow-800">Edit</a>
+                        </td>
+                        <td><a href=".?action=detail_note&id=<?php echo $note['id'] ?>" class="text-red-800">Detail</a>
                         </td>
                         <td>
                             <form action=".?action=delete" method="post">
