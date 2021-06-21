@@ -2,12 +2,13 @@
 
 session_start(); // Start session
 require_once('controllers/UserController.php'); // Require UserController
-
+require_once 'controllers/NoteController.php'; // Require NoteController
 $action = filter_input(INPUT_POST, 'action'); // default is post method
 
 // Create new object of UserController class
 $userController = new UserController();
-
+// Create new object of NoteController class
+$noteController = new NoteController();
 if ($action == null) {
     $action = filter_input(INPUT_GET, 'action');
     if ($action == null) {
@@ -80,6 +81,26 @@ switch ($action) {
     {
         $userController->handleUploadNotes();
         break;
+    }
+    case 'list_notes':
+    {
+        $notes = $noteController->handleListNotes();
+        include 'views/notes/list-notes.php';
+        break;
+    }
+    case 'edit_note':
+    {
+        $userId = $_SESSION['user_session']['id'];
+        $id = filter_input(INPUT_GET, 'id');
+        $note = $noteController->handleDetailNote($userId, $id);
+        $path = $note['path'];
+        include 'views/notes/edit-note.php';
+        break;
+    }
+    case 'handle_edit_note':
+    {
+
+        $noteController->handleEditNote();
     }
 
 }

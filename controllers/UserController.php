@@ -95,12 +95,10 @@ class UserController extends User
             if ($isOk == true) {
                 $ext = 'txt'; // extension
                 $fileName = time() . $title . '.' . $ext; // Setting file name
-                $path = './public/notes/' . $fileName; // setting path of file name
+                $path = 'public/notes/' . $fileName; // setting path of file name
                 file_put_contents($path, $content); // writing content to file name
                 if (parent::storeNote($userId, $title, $path, $content) === true) {
-//                    TODO: Làm chức năng list notes và cho redirect về list notes nếu tạo note thành công
-//                    header('Location: .?action=list_notes);
-                    echo 'create success';
+                    header('Location: .?action=list_notes');
                 }
             } else {
                 header('Location: .?action=create_note');
@@ -113,16 +111,13 @@ class UserController extends User
         // Get current user
         $userId = $_SESSION['user_session']['id'];
         $data = [];
-//        echo '<pre>';
-//        print_r($_FILES['files']);
-//        exit();
 
         // Get target file
         foreach ($_FILES['files']['name'] as $key => $noteName) {
             $data[$key]['title'] = $noteName; // Set title
             $noteName = time() . $noteName; // set note name file for ignore file same name
             $extension = pathinfo($noteName, PATHINFO_EXTENSION); // Get file extension
-            $targetFile = './public/notes/' . $noteName; // Set target file to store
+            $targetFile = 'public/notes/' . $noteName; // Set target file to store
             $data[$key]['targetFile'] = $targetFile;
             $data[$key]['extension'] = $extension;
         }
@@ -153,10 +148,8 @@ class UserController extends User
             if ($isOk == true) { // if true
                 if (move_uploaded_file($value['tmp_name'], $value['targetFile'])) {
                     $content = file_get_contents($value['targetFile']);
-                    if(parent::storeNote($userId, $value['title'], $value['targetFile'], $content)){
-                        echo 'SUccess';
-//                        TODO:: return detail note
-//                        header('Location: ?.action');
+                    if (parent::storeNote($userId, $value['title'], $value['targetFile'], $content)) {
+                        header('Location: .?action=list_notes');
                     }
                 }
             }

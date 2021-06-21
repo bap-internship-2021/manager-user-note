@@ -37,7 +37,7 @@
             <ul class="flex flex-row mx-auto text-center justify-left">
                 <li class="p-2"><a href=".?action=home">Home</a></li>
                 <?php if (isset($_SESSION['user_session'])) { ?>
-                    <li class="p-2"><a href=".?action=home">My notes</a></li>
+                    <li class="p-2"><a href=".?action=list_notes">My notes</a></li>
                     <li class="p-2"><a href=".?action=create_note">Create Note</a></li>
                     <li class="p-2"><a href=".?action=upload_notes">Upload your notes</a></li>
                 <?php } ?>
