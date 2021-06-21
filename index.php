@@ -99,8 +99,22 @@ switch ($action) {
     }
     case 'handle_edit_note':
     {
-
         $noteController->handleEditNote();
+        break;
     }
-
+    case 'delete':
+    {
+        $userId = $userId = $_SESSION['user_session']['id'];
+        $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+        $note = $noteController->handleDetailNote($userId, $id);
+        if ($noteController->handleDelete($id) == true) {
+            unlink($note['path']);
+            $_SESSION['Delete']['success'] = 'Delete success!';
+            header('Location: .?action=list_notes');
+        } else {
+            $_SESSION['Delete']['fail'] = 'Delete fail!';
+            header('Location: .?action=list_notes');
+        }
+        break;
+    }
 }
