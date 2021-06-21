@@ -4,6 +4,9 @@ require_once 'models/Note.php';
 
 class NoteController extends Note
 {
+    /**
+     * @return array|false|void
+     */
     public function handleListNotes()
     {
         if (isset($_SESSION['user_session'])) {
@@ -54,8 +57,21 @@ class NoteController extends Note
             } else {
                 header('Location: .?action=edit_note&id=' . $noteId);
             }
+        }
+    }
 
-
+    /**
+     * @param $id
+     * @return bool
+     */
+    public function handleDelete($id): bool
+    {
+        if (parent::deleteNote($id) == true) {
+            return true;
+        } else {
+            echo 'OK';
+            exit();
+            return false;
         }
     }
 }

@@ -68,4 +68,18 @@ class Note extends DatabaseConnect
             echo($exception->getMessage());
         }
     }
+
+    public function deleteNote($id)
+    {
+        try {
+            $query = 'DELETE FROM notes WHERE id = :id';
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+            $result = $stmt->execute();
+            $stmt->closeCursor();
+            return $result;
+        } catch (PDOException $exception) {
+            die($exception->getMessage());
+        }
+    }
 }
