@@ -117,4 +117,29 @@ switch ($action) {
         }
         break;
     }
+    case 'download_note':
+    {
+        // Get path file from server
+        $path = filter_input(INPUT_GET, 'path');
+        //Check the file path exists or not
+        if (file_exists($path)) {
+
+            //Define header information
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename="' . basename($path) . '"');
+            header('Content-Length: ' . filesize($path));
+            header('Pragma: public');
+
+            //Clear system output buffer
+            flush();
+
+            //Read the size of the file
+            readfile($path, true);
+
+            //Terminate from the script
+            die();
+            break;
+        }
+    }
 }
